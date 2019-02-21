@@ -1,0 +1,75 @@
+<!-- El fichero xml para la configuración de un formato del parser debe tener el
+nombre del formato que describe con extensión ".xml", el elemento raíz debe
+tener como nombre "parser" y contener un atributo "name" donde se define el 
+nombre del formato que describe. -->
+<parser name="standard">
+
+    <!-- El primer hijo del elemento raíz debe tener como nombre el 
+    identificador del formato y contener un atributo "class" con valor 
+    "initial", esto indica que es la producción inicial de la gramática; a 
+    continuación las demás producciones. -->
+    <standard class="initial" regexp="^.*$">
+        <noterminal1 class="reference" />
+        <noterminal2 class="reference" />               
+    </standard>
+    
+    <!-- Cada producción estará definida como un elemento cuyo nombre 
+    identifique un símbolo no terminal dentro de la gramática; debe contener los
+    atributos "class" con valor "non_terminal" y "regexp" donde se establece la 
+    expresión regular que coincide con dicho símbolo; como hijos de este se 
+    tendrán referencias a los elementos que desarrollan la producción en orden 
+    de ocurrencia dentro del formato. -->
+    <noterminal1 class="non_terminal" regexp=".+\n">
+    
+        <!-- Cada referencia debe ser un elemento que tenga como nombre el 
+        identificador del símbolo referido y un atributo "class" con valor 
+        "reference"; también se pueden adicionar los atributos "name" (si se 
+        quiere establecer un identificador más preciso) y "required" con valor 
+        "true" o "false" (si se quiere especificar que aparición del símbolo es 
+        obligatoria u opcional respectivamente); por defecto el valor de
+        "required" es "true". -->
+        <noterminal3 class="reference" name="variable1" />
+        <terminal1 class="reference" required="false" />
+    </noterminal1>
+    
+    <!-- Los símbolos cuyo desarrollo es una lista se definirán como elementos 
+    con atributo "class" de valor "list" y como elemento hijo tendrá una 
+    referencia al símbolo a listar. -->
+    <noterminal2 class="list">
+        <terminal2 class="reference" />
+    </noterminal2>
+    
+    <!-- Para representar un conjunto desordenado de símbolos se utilizará un 
+    elemento de atributo "class" con valor "collection" y como elementos hijos 
+    se deben listar las referencia a los elementos incluidos en el conjunto. -->
+    <noterminal2 class="collection">
+        <terminal3 class="reference" />
+        <terminal4 class="reference" />
+    </noterminal2>
+    
+    <!-- Si un símbolo se desarrolla como uno y solo uno elemento de una lista 
+    de opciones se representará con un elemento de atributo "class" con valor 
+    "option" y como elementos hijos tendrá las referencias a los posibles 
+    elementos en los deriva. -->
+    <noterminal3 class="option">
+        <terminal2 class="reference" />
+        <terminal3 class="reference" />
+    </noterminal3>
+    
+    <!-- Los símbolos terminales de la gramática identificables por una 
+    expresión regular se representarán como elementos cuyo nombre será el 
+    identificador del propio símbolo y deben tener un atributo "class" con valor 
+    "reg_terminal" y un atributo "regexp", donde se defina la expresión regular
+    que lo reconoce. -->
+    <terminal1 class="reg_terminal" regexp="[0-9]{4}" />
+    <terminal2 class="reg_terminal" regexp="([a-z]|[A-Z])+\b" />
+    
+    <!-- Los símbolos terminales de la gramática identificables a partir de un
+    diccionario se representarán como elementos cuyo nombre será el
+    identificador del propio símbolo y deben tener un atributo "class" con valor 
+    "dic_terminal", en este caso de debe agregar un diccionario cuyo nombre 
+    coincida con el identificador del símbolo con extensión ".dic". -->
+    <terminal3 class="dic_terminal" />
+    <terminal4 class="dic_terminal" />
+       
+</parser>
